@@ -9,18 +9,54 @@ class Tutor(models.Model):
         ('GR','GERMAN'),
         ('FR','FRENCH')
     ]
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     headline = models.CharField(max_length=30,blank=True)
-    tutor_description = models.CharField(max_length=2,choices= LANGUAGES)
-    profile_pic = models.ImageField(upload_to='pp')
+    tutor_description = models.CharField(default="")
+    language = models.CharField(max_length=2, choices=LANGUAGES, default='EN')
+    image_label = models.CharField( max_length=20,default="profile")
+    profile_pic = models.ImageField(upload_to='pics/')
+    
+    #extra's    
+    areas_of_experience = models.TextField(default="")
+    professional_experience = models.TextField(default="")
+    
     #links 
     website = models.URLField(null=True,blank=True)
     x = models.URLField(null=True,blank=True)
     linkdin = models.URLField(null=True,blank=True)
     youtube = models.URLField(null=True,blank=True)
     facebook = models.URLField(null=True,blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True,null=True,
+        blank=True)
+
+    def __str__(self):
+        return self.first_name
+
+class Courses(models.Model):
+    NOTES_TYPES = [
+        ('PD','PDF'),
+        ('PT','PPT')
+    ]
+    price = models.IntegerField(default=0)
+    title = models.CharField(unique= True)
+    subtitle = models.CharField()
+    description = models.TextField()
+    notes_types = models.CharField(choices = NOTES_TYPES)
+    notes_desc = models.TextField()
+    file = models.FileField(upload_to='course_files/')
+    thumbnail = models.ImageField(upload_to='thumbnail/',null=True,blank=True)
+    instructor = models.ForeignKey(Tutor, on_delete=models.CASCADE,related_name="tutor" )
+    course_overview = models.TextField(default="")
+    key_learnings = models.TextField(default="")
+    
+    created_at = models.DateTimeField(auto_now_add=True,null=True,
+        blank=True)
+    
+    def __str__(self):
+        return self.title
+    
 class Comments(models.Model):
     STAR_NO = [
         ('1','ONE'),
@@ -33,23 +69,11 @@ class Comments(models.Model):
     content = models.TextField()
     stars = models.CharField(choices=STAR_NO)
     date = models.DateField( auto_now_add=True)
-class Courses(models.Model):
-    NOTES_TYPES = [
-        ('PD','PDF'),
-        ('PT','PPT')
-    ]
-    price = models.IntegerField()
-    title = models.CharField(unique= True)
-    subtitle = models.CharField()
-    description = models.TextField()
-    notes_types = models.TextField(choices = NOTES_TYPES)
-    notes_desc = models.TextField()
-    file = models.TextField()
-    thumbnail = models.ImageField(upload_to='thumbnail/')
-    instructor = models.ForeignKey(Tutor, on_delete=models.CASCADE,related_name="tutor" )
-    course_overview = models.TextField()
-    key_learnings = models.TextField()
+    course = models.ForeignKey(Courses,on_delete=models.CASCADE,related_name='course_table',default="")
     
+    created_at = models.DateTimeField(auto_now_add=True,null=True,
+        blank=True)
     
+    def __str__(self):
+        return self.student_user
 
-    

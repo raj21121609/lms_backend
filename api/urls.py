@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import helloview
+from .views import Tutor_form
 
 urlpatterns = [
-    path('hello/',helloview.as_view()),
+    path('Tutor_register/',Tutor_form.as_view())
 ]
