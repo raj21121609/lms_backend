@@ -3,17 +3,17 @@ from django.contrib.auth.models import User
 
 class Tutor(models.Model):
     LANGUAGES = [
-        ('EN','ENGLISH'),
-        ('SP','SPANISH'),
-        ('IT','ITALIAN'),
-        ('GR','GERMAN'),
-        ('FR','FRENCH')
+        ('English','English'),
+        ('Spanish','Spanish'),
+        ('Italian','Italian'),
+        ('German','German'),
+        ('French','French')
     ]
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     headline = models.CharField(max_length=30,blank=True)
     tutor_description = models.CharField(default="")
-    language = models.CharField(max_length=2, choices=LANGUAGES, default='EN')
+    language = models.CharField( choices=LANGUAGES, default='EN')
     image_label = models.CharField( max_length=20,default="profile")
     profile_pic = models.ImageField(upload_to='pics/')
     
@@ -57,6 +57,15 @@ class Courses(models.Model):
     def __str__(self):
         return self.title
     
+class Chapters(models.Model):
+    title = models.TextField(default="")
+    subtitle = models.TextField(default="")
+    desciption = models.TextField(default="")
+    notes_content_type = models.CharField()
+    notes_type = models.TextField()
+    notes_description = models.TextField()
+    file = models.FileField()
+    thumbnail = models.ImageField()
 class Comments(models.Model):
     STAR_NO = [
         ('1','ONE'),
@@ -76,4 +85,3 @@ class Comments(models.Model):
     
     def __str__(self):
         return self.student_user
-
