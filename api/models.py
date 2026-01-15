@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Tutor(models.Model):
     LANGUAGES = [
@@ -35,37 +36,52 @@ class Tutor(models.Model):
         return self.first_name
 
 class Courses(models.Model):
-    NOTES_TYPES = [
-        ('PD','PDF'),
-        ('PT','PPT')
+    LANGUAGES = [
+        ('English','English'),
+        ('Spanish','Spanish'),
+        ('Italian','Italian'),
+        ('German','German'),
+        ('French','French')
     ]
+    
     price = models.IntegerField(default=0)
     title = models.CharField(unique= True)
-    subtitle = models.CharField()
-    description = models.TextField()
-    notes_types = models.CharField(choices = NOTES_TYPES)
-    notes_desc = models.TextField()
-    file = models.FileField(upload_to='course_files/')
-    thumbnail = models.ImageField(upload_to='thumbnail/',null=True,blank=True)
+    about_course = models.TextField(default="")
+    course_description = models.TextField(default=True)
+    certification = models.TextField(default=True)
     instructor = models.ForeignKey(Tutor, on_delete=models.CASCADE,related_name="tutor" )
-    course_overview = models.TextField(default="")
-    key_learnings = models.TextField(default="")
+    thumbnail = models.ImageField(upload_to='thumbnail/',null=True,blank=True)
+    language = models.CharField(default="English",choices=LANGUAGES)
     
-    created_at = models.DateTimeField(auto_now_add=True,null=True,
+    created_at = models.DateTimeField(null=True,default=timezone.now,
         blank=True)
     
     def __str__(self):
         return self.title
     
 class Chapters(models.Model):
+    course=models.ForeignKey(Courses, on_delete=models.CASCADE, related_name="chapters",null=True)
+    title = models.TextField(default=True)
+    subtitle = models.TextField(default=True)
+    desciption = models.TextField(default=True)
+    chapter_overview = models.TextField(default = "")
+    key_learnings = models.TextField(default="")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.title
+    
+class Lecture(models.Model):
+    chapter = models.ForeignKey(Chapters,on_delete= models.CASCADE)
     title = models.TextField(default="")
-    subtitle = models.TextField(default="")
-    desciption = models.TextField(default="")
-    notes_content_type = models.CharField()
-    notes_type = models.TextField()
-    notes_description = models.TextField()
-    file = models.FileField()
-    thumbnail = models.ImageField()
+    video_url = models.URLField(null=True, blank=True)
+    duration = models.IntegerField(null=True, blank=True)
+    desc = models.TextField()
+    created_at = models.DateTimeField( auto_now=False, auto_now_add=False)
+    
+    def __str__(self):
+        return self.title   
 class Comments(models.Model):
     STAR_NO = [
         ('1','ONE'),

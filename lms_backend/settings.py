@@ -29,6 +29,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'your_cloud_name',
+    'API_KEY': 'your_api_key',
+    'API_SECRET': 'your_api_secret',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Application definition
 
@@ -43,6 +50,8 @@ INSTALLED_APPS = [
     'api',   
     'corsheaders',
     'users',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
