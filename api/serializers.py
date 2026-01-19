@@ -10,5 +10,6 @@ class Tutor_profile_serializers(serializers.ModelSerializer):
 class Courses_serializers(serializers.ModelSerializer):
     class Meta:
         model = Courses
-        fields = ['price','title','about_course','course_description','certification','instructor',
+        fields = ['price','title','about_course','course_description','certification',
                   'thumbnail','language']
+        read_only_fields = ['instructor']

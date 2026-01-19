@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 class Tutor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="tutor" ,null=True,blank=True)
     LANGUAGES = [
         ('English','English'),
         ('Spanish','Spanish'),
@@ -14,7 +15,7 @@ class Tutor(models.Model):
     last_name = models.CharField(max_length=30)
     headline = models.CharField(max_length=30,blank=True)
     tutor_description = models.CharField(default="")
-    language = models.CharField( choices=LANGUAGES, default='EN')
+    language = models.CharField( choices=LANGUAGES, default='English')
     image_label = models.CharField( max_length=20,default="profile")
     profile_pic = models.ImageField(upload_to='pics/')
     
@@ -41,11 +42,11 @@ class Courses(models.Model):
         ('Spanish','Spanish'),
         ('Italian','Italian'),
         ('German','German'),
-        ('French','French')
+        ('French','French'),
     ]
     
     price = models.IntegerField(default=0)
-    title = models.CharField(unique= True)
+    title = models.CharField(unique= True, max_length=100)
     about_course = models.TextField(default="")
     course_description = models.TextField(default=True)
     certification = models.TextField(default=True)
@@ -60,7 +61,7 @@ class Courses(models.Model):
         return self.title
     
 class Chapters(models.Model):
-    course=models.ForeignKey(Courses, on_delete=models.CASCADE, related_name="chapters",null=True)
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name="chapters",null=True)
     title = models.TextField(default=True)
     subtitle = models.TextField(default=True)
     desciption = models.TextField(default=True)
