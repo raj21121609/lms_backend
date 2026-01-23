@@ -13,3 +13,13 @@ class Courses_serializers(serializers.ModelSerializer):
         fields = ['price','title','about_course','course_description','certification',
                   'thumbnail','language']
         read_only_fields = ['instructor']
+        
+class Pk_serializers(serializers.ModelSerializer):
+    class Meta:
+        model = Courses
+        fields = ['id','title','price']
+        
+class Course_pk(serializers.ModelSerializer):
+    class Meta:
+        model = Courses
+        fields = "__all__"

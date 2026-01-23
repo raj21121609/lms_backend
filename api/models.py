@@ -102,3 +102,19 @@ class Comments(models.Model):
     
     def __str__(self):
         return self.student_user
+class Orders(models.Model):
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_id = models.CharField(max_length=5)
+    country = models.CharField(default="India")
+    Total_amount = models.IntegerField(default=0)
+    
+    created_at = models.DateTimeField(null= True ,blank=True)
+    
+    def __str__(self):
+        return self.buyer
+    
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_user")
+    course = models.ForeignKey(Courses , on_delete=models.CASCADE, related_name="cart_course")
+    created_at = models
